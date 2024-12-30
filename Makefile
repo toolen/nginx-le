@@ -11,3 +11,14 @@ release_latest:
  		-t umputun/nginx-le:${GITTAG} -t umputun/nginx-le:latest .
 
 .PHONY: release
+
+repository = toolen/nginx-le
+version = 1.1.0
+tag = ghcr.io/$(repository):$(version)
+
+build:
+	docker build --pull --no-cache -t $(tag) .
+
+push-to-ghcr:
+	docker login ghcr.io -u toolen -p $(CR_PAT)
+	docker push $(tag)

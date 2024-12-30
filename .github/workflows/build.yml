@@ -2,8 +2,7 @@ name: CI Build
 
 on:
   push:
-    branches:
-    tags:
+    branches: ['master']
   pull_request:
 
 jobs:
@@ -13,27 +12,11 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v4
 
-      - name: set up QEMU
-        uses: docker/setup-qemu-action@v3
+      - name: Build image
+        run: make image
 
-      - name: set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
-
-      - name: build image
+      - name: Push image
+        if: ${{ github.ref_name == 'master' }}
         env:
-          GITHUB_PACKAGE_TOKEN: ${{ secrets.PKG_TOKEN }}
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-          USERNAME: ${{ github.actor }}
-          GITHUB_SHA: ${{ github.sha}}
-          GITHUB_REF: ${{ github.ref}}
-        run: |
-          ref="$(echo ${GITHUB_REF} | cut -d'/' -f3)"
-          echo GITHUB_REF - $ref
-          docker buildx build \
-              --build-arg CI=github --build-arg GITHUB_SHA=${GITHUB_SHA} --build-arg GIT_BRANCH=${ref} \
-              --platform linux/amd64,linux/arm/v7,linux/arm64 \
-              -t ghcr.io/umputun/nginx-le:${ref} -t umputun/nginx-le:${ref} .
+          CR_PAT: ${{ secrets.CR_PAT }}
+        run: make push-to-ghcr

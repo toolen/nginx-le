@@ -1,7 +1,10 @@
 FROM nginx:1.26-alpine
 
+# deletes the symlinked files for crowdsec
+RUN rm /var/log/nginx/*.log
+
 # enables automatic changelog generation by tools like Dependabot
-LABEL org.opencontainers.image.source="https://github.com/nginx-le/nginx-le"
+LABEL org.opencontainers.image.source="https://github.com/toolen/nginx-le"
 
 ADD conf/nginx.conf /etc/nginx/nginx.conf
 
