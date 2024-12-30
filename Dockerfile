@@ -1,8 +1,5 @@
 FROM nginx:1.26-alpine
 
-# deletes the symlinked files for crowdsec
-RUN rm /var/log/nginx/*.log
-
 # enables automatic changelog generation by tools like Dependabot
 LABEL org.opencontainers.image.source="https://github.com/toolen/nginx-le"
 
@@ -15,6 +12,8 @@ RUN \
  rm /etc/nginx/conf.d/default.conf && \
  chmod +x /entrypoint.sh && \
  chmod +x /le.sh && \
- apk add --no-cache --update certbot tzdata openssl
+ apk add --no-cache --update certbot tzdata openssl \
+ # deletes the symlinked files for crowdsec
+ rm -f /var/log/nginx/*
 
 CMD ["/entrypoint.sh"]
