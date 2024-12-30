@@ -91,4 +91,6 @@ mv -v /etc/nginx/stream.d /etc/nginx/stream.d.disabled
  done
 ) &
 
+rm -rf /var/log/nginx/*.log
+
 exec nginx -g "daemon off;"
