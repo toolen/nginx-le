@@ -13,7 +13,7 @@ release_latest:
 .PHONY: release
 
 repository = toolen/nginx-le
-version = 1.1.1
+version = 1.1.2
 tag = ghcr.io/$(repository):$(version)
 
 image:

@@ -12,8 +12,6 @@ RUN \
  rm /etc/nginx/conf.d/default.conf && \
  chmod +x /entrypoint.sh && \
  chmod +x /le.sh && \
- apk add --no-cache --update certbot tzdata openssl \
- # deletes the symlinked files for crowdsec
- rm -f /var/log/nginx/*
+ apk add --no-cache --update certbot tzdata openssl
 
 CMD ["/entrypoint.sh"]
