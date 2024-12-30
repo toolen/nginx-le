@@ -16,7 +16,7 @@ repository = toolen/nginx-le
 version = 1.1.0
 tag = ghcr.io/$(repository):$(version)
 
-build:
+image:
 	docker build --pull --no-cache -t $(tag) .
 
 push-to-ghcr:
