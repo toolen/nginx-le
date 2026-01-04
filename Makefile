@@ -13,11 +13,15 @@ release_latest:
 .PHONY: release
 
 repository = toolen/nginx-le
-version = 1.1.4
+version = 1.1.5
 tag = ghcr.io/$(repository):$(version)
+trivy_version=0.68.2
 
 image:
 	docker build --pull --no-cache -t $(tag) .
+
+trivy:
+	docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ~/.cache/trivy:/root/.cache/ ghcr.io/aquasecurity/trivy:$(trivy_version) image --ignore-unfixed $(tag)
 
 push-to-ghcr:
 	docker login ghcr.io -u toolen -p $(CR_PAT)
