@@ -13,7 +13,7 @@ release_latest:
 .PHONY: release
 
 repository = toolen/nginx-le
-version = 1.1.5
+version = 1.1.6
 tag = ghcr.io/$(repository):$(version)
 trivy_version=0.68.2
 
